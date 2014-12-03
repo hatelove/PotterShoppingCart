@@ -8,20 +8,27 @@ namespace PotterShoppingCart.Tests
     class ShoppingCart
     {
         private const double unitBookPrice = 100;
+
+        private Dictionary<int, double> discountRatio;
+
+        public ShoppingCart()
+        {
+            this.discountRatio = new Dictionary<int, double>() 
+            {
+                {1,1},
+                {2,0.95},
+                {3,0.9}
+            };
+        }
+
         internal double CalculateFee(Dictionary<string, int> dictionary)
         {
             var bookCount = dictionary.Sum(x => x.Value);
-            if (bookCount == 1)
+
+            if (this.discountRatio.ContainsKey(bookCount))
             {
-                return unitBookPrice * bookCount * 1;
-            }
-            else if (bookCount == 2)
-            {
-                return unitBookPrice * bookCount * 0.95;
-            }
-            else if (bookCount == 3)
-            {
-                return unitBookPrice * bookCount * 0.9;
+                var ratio = this.discountRatio[bookCount];
+                return unitBookPrice * bookCount * ratio;
             }
             else
             {
