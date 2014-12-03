@@ -31,22 +31,28 @@ namespace PotterShoppingCart.Tests
                 return 0;
             }
 
-            //同一集超過一本的書，有幾集
-            var groupOfEditionMoreThanOneBook = books.Where(x => x.Value > 0);
-            var groupCount = groupOfEditionMoreThanOneBook.Count();
+            var maxBooksCount = books.Max(x => x.Value);
+            var unCheckedOutBooks = books.ToDictionary(x => x.Key, y => y.Value);
 
-            //成群的折扣
-            var discountRatio = this.discountRatio[groupCount];
+            double fee = 0;
 
-            var excludeSetBooksCount = bookCount - groupCount;
+            //檢查是否成套，每結帳一套（依據該套書本數的折扣），結帳過的集數書本數就扣1
+            for (int i = maxBooksCount; i > 0; i--)
+            {
+                var groupOfEditionMoreThanOneBook = unCheckedOutBooks.Where(x => x.Value > 0).ToList();
+                var groupCount = groupOfEditionMoreThanOneBook.Count;
 
-            //成群的書錢
-            var setPrice = groupCount * unitBookPrice * discountRatio;
+                var discountRatio = this.discountRatio[groupCount];
 
-            //孤本的書錢
-            var nonSetPrice = excludeSetBooksCount * unitBookPrice;
+                fee += groupCount * unitBookPrice * discountRatio;
 
-            return setPrice + nonSetPrice;
+                foreach (var group in groupOfEditionMoreThanOneBook)
+                {
+                    unCheckedOutBooks[group.Key]--;
+                }
+            }
+
+            return fee;
         }
     }
 }
