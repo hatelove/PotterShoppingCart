@@ -13,13 +13,16 @@ namespace PotterShoppingCart.Tests
             var bookCount = dictionary.Sum(x => x.Value);
             if (bookCount == 1)
             {
-                return unitBookPrice * bookCount;
+                return unitBookPrice * bookCount * 1;
             }
             else if (bookCount == 2)
             {
                 return unitBookPrice * bookCount * 0.95;
             }
-            else
+            else if (bookCount == 3)
+            {
+                return unitBookPrice * bookCount * 0.9;
+            }
             {
                 return 0;
             }
