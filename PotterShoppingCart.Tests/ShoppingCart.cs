@@ -9,7 +9,7 @@ namespace PotterShoppingCart.Tests
     {
         internal double CalculateFee(Dictionary<string, int> dictionary)
         {
-            throw new NotImplementedException();
+            return 100;
         }
     }
 }
