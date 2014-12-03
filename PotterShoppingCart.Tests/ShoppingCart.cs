@@ -42,6 +42,13 @@ namespace PotterShoppingCart.Tests
                 var groupOfEditionMoreThanOneBook = unCheckedOutBooks.Where(x => x.Value > 0).ToList();
                 var groupCount = groupOfEditionMoreThanOneBook.Count;
 
+                // 只剩下某一集有書，直接把剩下的書x單價，加上原本的fee，即為總價
+                if (groupCount == 1)
+                {
+                    fee += groupOfEditionMoreThanOneBook.First().Value * unitBookPrice;
+                    break;
+                }
+
                 var discountRatio = this.discountRatio[groupCount];
 
                 fee += groupCount * unitBookPrice * discountRatio;
