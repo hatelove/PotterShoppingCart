@@ -76,7 +76,7 @@ namespace MyTest
         }
 
         [TestMethod]
-        public void Test_一二集各買了一本_第三集買了兩本_價格應為370()
+        public void Test_一套加孤本_一二集各買了一本_第三集買了兩本_價格應為370()
         {
             this._books.Add("first", 1);
             this._books.Add("second", 1);
@@ -84,6 +84,18 @@ namespace MyTest
 
             this.fee = this._target.CalculateFee(this._books);
             var expected = 370;
+            Assert.AreEqual(expected, this.fee);
+        }
+
+        [TestMethod]
+        public void Test_兩套加孤本_第一集買了一本_第二三集各買了兩本_價格應為460()
+        {
+            this._books.Add("first", 1);
+            this._books.Add("second", 2);
+            this._books.Add("third", 2);
+
+            this.fee = this._target.CalculateFee(this._books);
+            var expected = 460;
             Assert.AreEqual(expected, this.fee);
         }
     }
