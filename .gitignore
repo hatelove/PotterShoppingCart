@@ -7,6 +7,7 @@
 *.sln.docstates
 
 # Build results
+<<<<<<< HEAD
 
 [Dd]ebug/
 [Rr]elease/
@@ -17,13 +18,43 @@ build/
 
 # Enable "build/" folder in the NuGet Packages folder since NuGet packages use it for MSBuild targets
 !packages/*/build/
+=======
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+build/
+bld/
+[Bb]in/
+[Oo]bj/
+
+# Roslyn cache directories
+*.ide/
+>>>>>>> 4acecb577aa3d2cdc3cc5f959303f20bce6c12b2
 
 # MSTest test Results
 [Tt]est[Rr]esult*/
 [Bb]uild[Ll]og.*
 
+<<<<<<< HEAD
 *_i.c
 *_p.c
+=======
+#NUNIT
+*.VisualState.xml
+TestResult.xml
+
+# Build Results of an ATL Project
+[Dd]ebugPS/
+[Rr]eleasePS/
+dlldata.c
+
+*_i.c
+*_p.c
+*_i.h
+>>>>>>> 4acecb577aa3d2cdc3cc5f959303f20bce6c12b2
 *.ilk
 *.meta
 *.obj
