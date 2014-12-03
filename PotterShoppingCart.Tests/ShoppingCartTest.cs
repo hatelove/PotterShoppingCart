@@ -74,5 +74,17 @@ namespace MyTest
             var expected = 375;
             Assert.AreEqual(expected, this.fee);
         }
+
+        [TestMethod]
+        public void Test_一二集各買了一本_第三集買了兩本_價格應為370()
+        {
+            this._books.Add("first", 1);
+            this._books.Add("second", 1);
+            this._books.Add("third", 2);
+
+            this.fee = this._target.CalculateFee(this._books);
+            var expected = 370;
+            Assert.AreEqual(expected, this.fee);
+        }
     }
 }
