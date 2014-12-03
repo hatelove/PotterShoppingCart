@@ -23,19 +23,30 @@ namespace PotterShoppingCart.Tests
             };
         }
 
-        internal double CalculateFee(Dictionary<string, int> dictionary)
+        internal double CalculateFee(Dictionary<string, int> books)
         {
-            var bookCount = dictionary.Sum(x => x.Value);
-
-            if (this.discountRatio.ContainsKey(bookCount))
-            {
-                var ratio = this.discountRatio[bookCount];
-                return unitBookPrice * bookCount * ratio;
-            }
-            else
+            var bookCount = books.Sum(x => x.Value);
+            if (bookCount == 0)
             {
                 return 0;
             }
+
+            //同一集超過一本的書，有幾集
+            var groupOfEditionMoreThanOneBook = books.Where(x => x.Value > 0);
+            var groupCount = groupOfEditionMoreThanOneBook.Count();
+
+            //成群的折扣
+            var discountRatio = this.discountRatio[groupCount];
+
+            var excludeSetBooksCount = bookCount - groupCount;
+
+            //成群的書錢
+            var setPrice = groupCount * unitBookPrice * discountRatio;
+
+            //孤本的書錢
+            var nonSetPrice = excludeSetBooksCount * unitBookPrice;
+
+            return setPrice + nonSetPrice;
         }
     }
 }
