@@ -23,6 +23,7 @@ namespace PotterShoppingCart.Tests
             {
                 return unitBookPrice * bookCount * 0.9;
             }
+            else
             {
                 return 0;
             }
