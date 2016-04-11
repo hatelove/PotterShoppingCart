@@ -29,9 +29,7 @@ namespace PotterShoppingCart.Tests
                 return 0;
             }
 
-            List<int> bookCountMoreThanZero = GetBookCountMoreThanZero(books);
-
-            var bookCountsOfSuites = GetBooksCountOfEachSuite(books, bookCountMoreThanZero);
+            var bookCountsOfSuites = GetBooksCountOfEachSuite(books);
 
             double total = GetTotalOfSuites(bookCountsOfSuites);
 
@@ -54,19 +52,21 @@ namespace PotterShoppingCart.Tests
             return total;
         }
 
-        private static IEnumerable<int> GetBooksCountOfEachSuite(Dictionary<string, int> books, List<int> bookMoreThanZero)
+        private static IEnumerable<int> GetBooksCountOfEachSuite(Dictionary<string, int> books)
         {
+            List<int> bookCountMoreThanZero = GetBookCountMoreThanZero(books);
+
             var maxBookCount = books.Max(x => x.Value);
 
             for (int i = 0; i < maxBookCount; i++)
             {
-                var bookCountOfSuite = bookMoreThanZero.Count(x => x > 0);
+                var bookCountOfSuite = bookCountMoreThanZero.Count(x => x > 0);
 
                 yield return bookCountOfSuite;
 
-                for (int index = 0; index < bookMoreThanZero.Count; index++)
+                for (int index = 0; index < bookCountMoreThanZero.Count; index++)
                 {
-                    bookMoreThanZero[index] -= 1;
+                    bookCountMoreThanZero[index] -= 1;
                 }
             }
         }
