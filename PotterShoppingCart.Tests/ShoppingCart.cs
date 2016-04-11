@@ -40,14 +40,12 @@ namespace PotterShoppingCart.Tests
             return total;
         }
 
-        private double GetTotalOfSuites(IEnumerable<int> groups)
+        private double GetTotalOfSuites(IEnumerable<int> bookCountsOfSuites)
         {
-            double total = 0;
-            foreach (var item in groups)
+            var total = bookCountsOfSuites.Sum(x =>
             {
-                var discountRatio = this.discountRatio[item];
-                total += item * unitBookPrice * discountRatio;
-            }
+                return x * unitBookPrice * this.discountRatio[x];
+            });
 
             return total;
         }
@@ -55,11 +53,11 @@ namespace PotterShoppingCart.Tests
         private static IEnumerable<int> GetBooksCountOfEachSuite(Dictionary<string, int> books, List<int> bookMoreThanZero)
         {
             var maxBookCount = books.Max(x => x.Value);
-            
+
             for (int i = 0; i < maxBookCount; i++)
             {
                 var bookCountOfSuite = bookMoreThanZero.Count(x => x > 0);
-                
+
                 yield return bookCountOfSuite;
 
                 for (int index = 0; index < bookMoreThanZero.Count; index++)
