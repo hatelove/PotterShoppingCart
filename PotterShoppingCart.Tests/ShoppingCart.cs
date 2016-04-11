@@ -29,15 +29,19 @@ namespace PotterShoppingCart.Tests
                 return 0;
             }
 
-            //同一集超過一本的書，有幾集
-            var bookMoreThanZero = books.Where(x => x.Value > 0)
-                .Select(x => x.Value).ToList();
+            List<int> bookCountMoreThanZero = GetBookCountMoreThanZero(books);
 
-            var bookCountsOfSuites = GetBooksCountOfEachSuite(books, bookMoreThanZero);
+            var bookCountsOfSuites = GetBooksCountOfEachSuite(books, bookCountMoreThanZero);
 
             double total = GetTotalOfSuites(bookCountsOfSuites);
 
             return total;
+        }
+
+        private static List<int> GetBookCountMoreThanZero(Dictionary<string, int> books)
+        {
+            return books.Where(x => x.Value > 0)
+                .Select(x => x.Value).ToList();
         }
 
         private double GetTotalOfSuites(IEnumerable<int> bookCountsOfSuites)
