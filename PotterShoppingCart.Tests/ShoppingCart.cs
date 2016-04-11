@@ -33,19 +33,15 @@ namespace PotterShoppingCart.Tests
             var bookMoreThanZero = books.Where(x => x.Value > 0)
                 .Select(x => x.Value).ToList();
 
-            var maxBookCount = books.Max(x => x.Value);
-            var groups = new List<int>();
-            for (int i = 0; i < maxBookCount; i++)
-            {
-                var booksOfSuite = bookMoreThanZero.Count(x => x > 0);
-                groups.Add(booksOfSuite);
+            var bookCountsOfSuites = GetBooksCountOfEachSuite(books, bookMoreThanZero);
 
-                for (int index = 0; index < bookMoreThanZero.Count; index++)
-                {
-                    bookMoreThanZero[index] -= 1;
-                }
-            }
+            double total = GetTotalOfSuites(bookCountsOfSuites);
 
+            return total;
+        }
+
+        private double GetTotalOfSuites(IEnumerable<int> groups)
+        {
             double total = 0;
             foreach (var item in groups)
             {
@@ -54,6 +50,23 @@ namespace PotterShoppingCart.Tests
             }
 
             return total;
+        }
+
+        private static IEnumerable<int> GetBooksCountOfEachSuite(Dictionary<string, int> books, List<int> bookMoreThanZero)
+        {
+            var maxBookCount = books.Max(x => x.Value);
+            
+            for (int i = 0; i < maxBookCount; i++)
+            {
+                var bookCountOfSuite = bookMoreThanZero.Count(x => x > 0);
+                
+                yield return bookCountOfSuite;
+
+                for (int index = 0; index < bookMoreThanZero.Count; index++)
+                {
+                    bookMoreThanZero[index] -= 1;
+                }
+            }
         }
     }
 }
