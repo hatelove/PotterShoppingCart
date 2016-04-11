@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace PotterShoppingCart.Tests
 {
-    class ShoppingCart
+    internal class ShoppingCart
     {
         private const double unitBookPrice = 100;
 
@@ -13,7 +11,7 @@ namespace PotterShoppingCart.Tests
 
         public ShoppingCart()
         {
-            this.discountRatio = new Dictionary<int, double>() 
+            this.discountRatio = new Dictionary<int, double>()
             {
                 {1,1},
                 {2,0.95},
@@ -32,21 +30,30 @@ namespace PotterShoppingCart.Tests
             }
 
             //同一集超過一本的書，有幾集
-            var groupOfEditionMoreThanOneBook = books.Where(x => x.Value > 0);
-            var groupCount = groupOfEditionMoreThanOneBook.Count();
+            var bookMoreThanZero = books.Where(x => x.Value > 0)
+                .Select(x => x.Value).ToList();
 
-            //成群的折扣
-            var discountRatio = this.discountRatio[groupCount];
+            var maxBookCount = books.Max(x => x.Value);
+            var groups = new List<int>();
+            for (int i = 0; i < maxBookCount; i++)
+            {
+                var booksOfSuite = bookMoreThanZero.Count(x => x > 0);
+                groups.Add(booksOfSuite);
 
-            var excludeSetBooksCount = bookCount - groupCount;
+                for (int index = 0; index < bookMoreThanZero.Count; index++)
+                {
+                    bookMoreThanZero[index] -= 1;
+                }
+            }
 
-            //成群的書錢
-            var setPrice = groupCount * unitBookPrice * discountRatio;
+            double total = 0;
+            foreach (var item in groups)
+            {
+                var discountRatio = this.discountRatio[item];
+                total += item * unitBookPrice * discountRatio;
+            }
 
-            //孤本的書錢
-            var nonSetPrice = excludeSetBooksCount * unitBookPrice;
-
-            return setPrice + nonSetPrice;
+            return total;
         }
     }
 }
